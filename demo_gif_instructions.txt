@@ -1,0 +1,17 @@
+# Demo GIF Instructions
+
+1.  **Preparation**
+    - Open `http://localhost:3000` in Chrome.
+    - Have `packshot_cereal.png` ready on Desktop/Folder.
+    - Set window size to ~1280x800 for clean aspect ratio.
+
+2.  **Recording Steps (20-30s)**
+    - **Step 1 (0s-5s)**: Upload image. Show it appear. Click "Remove BG".
+    - **Step 2 (5s-10s)**: Select "1080x1920" from dropdown. Click "Suggest Layouts". Click one layout.
+    - **Step 3 (10s-15s)**: Click on "Headline". Type "Best Cereal".
+    - **Step 4 (15s-20s)**: Click "Validate". Show Green Pass result.
+    - **Step 5 (20s-22s)**: Click "Export". Show "Download" link appear.
+
+3.  **Capture Tool**
+    - Use LICEcap or ScreenToGif.
+    - Save as `demo.gif`.
