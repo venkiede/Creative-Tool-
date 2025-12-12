@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+Pillow
+rembg
+numpy
+onnxruntime; sys_platform == 'linux' or sys_platform == 'darwin'
+# onnxruntime-gpu or direct usage if needed, but keeping simple for hackathon
+pytest
+httpx
