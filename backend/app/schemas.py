@@ -14,16 +14,20 @@ class LayoutRequest(BaseModel):
     height: int
 
 class LayoutElement(BaseModel):
-    type: Literal["packshot", "text", "shape", "image"]
-    x: int
-    y: int
-    width: Optional[int] = None
-    height: Optional[int] = None
+    type: Literal["packshot", "text", "shape", "image", "logo"] # Added logo
+    x: float
+    y: float
+    width: float = 0
+    height: float = 0
     text: Optional[str] = None
     font_size: Optional[int] = None
-    font_family: Optional[str] = "Arial"
-    color: Optional[str] = "#000000"
+    font_family: Optional[str] = None
+    color: Optional[str] = None
     z_index: Optional[int] = 0
+    id: Optional[str] = None # Allow ID from frontend
+
+    class Config:
+        extra = "ignore" # robust to extra frontend fields
     # Additional props for value tiles
     tile_type: Optional[Literal["New", "White", "Clubcard"]] = None
     price: Optional[str] = None
@@ -51,6 +55,7 @@ class ExportRequest(BaseModel):
     canvas_width: int
     canvas_height: int
     elements: List[LayoutElement]
+    background_color: Optional[str] = "#ffffff"
     format: Literal["png", "jpg"] = "jpg"
 
 class ExportResponse(BaseModel):

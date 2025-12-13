@@ -12,7 +12,9 @@ def remove_background_rembg(image_path: str, output_path: str):
         out.save(output_path)
         return True
     except Exception as e:
+        import traceback
         print(f"Rembg failed: {e}")
+        print(traceback.format_exc())
         # Fallback: Just copy file if fail, or do simple threshold if critical. 
         # For prototype, if rembg missing/fails, we might just return the original or a mock.
         return False
@@ -63,9 +65,9 @@ def suggest_layouts(packshot_id: str, width: int, height: int, canvas_w: int = 1
         canvas_width=canvas_w,
         canvas_height=canvas_h,
         elements=[
-            LayoutElement(type="text", x=300, y=100, text="Main Headline", font_size=80, font_family="Arial", color=text_color, z_index=2),
+            LayoutElement(type="text", x=300, y=100, width=600, height=100, text="Main Headline", font_size=80, font_family="Arial", color="#000000", z_index=10),
             LayoutElement(type="packshot", x=350, y=300, width=500, height=500, text=packshot_id, z_index=1),
-             LayoutElement(type="text", x=100, y=900, text="Only at Tesco", font_size=30, font_family="Arial", color="#00539F", z_index=2) # Tag
+             LayoutElement(type="text", x=100, y=900, width=1000, height=50, text="Only at Tesco", font_size=30, font_family="Arial", color="#00539F", z_index=10) # Tag
         ]
     )
     proposals.append(l2)
@@ -79,7 +81,7 @@ def suggest_layouts(packshot_id: str, width: int, height: int, canvas_w: int = 1
         elements=[
             LayoutElement(type="shape", x=0, y=0, width=600, height=1200, color="#f0f0f0", z_index=0),
             LayoutElement(type="packshot", x=50, y=350, width=500, height=500, text=packshot_id, z_index=1),
-            LayoutElement(type="text", x=650, y=300, text="Feature Text", font_size=70, font_family="Arial", color=text_color, z_index=2),
+            LayoutElement(type="text", x=650, y=300, width=500, height=100, text="Feature Text", font_size=70, font_family="Arial", color="#000000", z_index=10),
         ]
     )
     proposals.append(l3)

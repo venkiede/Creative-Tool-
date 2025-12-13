@@ -40,9 +40,9 @@ def check_safe_zones(elements: List[LayoutElement], canvas_width: int, canvas_he
             el_bottom = el_y + el_h
             
             if el_y < top_zone:
-                violations.append(f"Element '{el.text or el.type}' in top safe zone.")
+                violations.append(f"'{el.text or el.type}' too high (Y:{int(el_y)} < {top_zone})")
             if el_bottom > max_y:
-                violations.append(f"Element '{el.text or el.type}' in bottom safe zone.")
+                violations.append(f"'{el.text or el.type}' too low (Bottom:{int(el_bottom)} > {max_y})")
         
         if violations:
             passed = False
@@ -87,3 +87,34 @@ def validate_layout(layout: LayoutRequest, elements: List[LayoutElement]) -> Val
     # Determine overall pass
     overall = all(c.passed for c in checks)
     return ValidationReport(overall_pass=overall, checks=checks)
+
+def auto_fix_elements(elements: List[LayoutElement], width: int, height: int) -> List[LayoutElement]:
+    fixed_elements = []
+    
+    # Safe Zones for 9:16
+    is_9_16 = (width == 1080 and height == 1920)
+    top_zone = 200
+    bottom_zone = 250
+    max_y = height - bottom_zone
+    
+    for el in elements:
+        new_el = el.copy() # Pydantic copy
+        
+        # 1. Fix Safe Zones (9:16 Only for now as per rules)
+        if is_9_16:
+            # Top violation
+            if new_el.y < top_zone:
+                new_el.y = top_zone + 10 # Start 10px below danger
+            
+            # Bottom violation
+            el_h = new_el.height if new_el.height else (new_el.font_size if new_el.font_size else 50)
+            if new_el.y + el_h > max_y:
+                new_el.y = max_y - el_h - 10 # End 10px above danger
+                
+        # 2. Fix Font Size (Min 24)
+        if new_el.type == 'text' and new_el.font_size and new_el.font_size < 24:
+            new_el.font_size = 24
+            
+        fixed_elements.append(new_el)
+        
+    return fixed_elements

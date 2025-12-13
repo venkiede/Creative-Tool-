@@ -40,21 +40,36 @@ export const validateLayout = async (width, height, elements) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            req: { packshot_id: "layout_check", width, height },
+            width: width,
+            height: height,
             elements: elements
         }),
     });
     return res.json();
 };
 
-export const exportLayout = async (width, height, elements) => {
+export const autoFixLayout = async (width, height, elements) => {
+    const res = await fetch(`${API_URL}/auto-fix`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            width: width,
+            height: height,
+            elements: elements
+        }),
+    });
+    return res.json();
+};
+
+export const exportLayout = async (width, height, elements, backgroundColor) => {
     const res = await fetch(`${API_URL}/export`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             canvas_width: width,
             canvas_height: height,
-            elements: elements
+            elements: elements,
+            background_color: backgroundColor
         }),
     });
     return res.json();
