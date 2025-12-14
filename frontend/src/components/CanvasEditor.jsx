@@ -167,7 +167,11 @@ const CanvasEditor = ({ width, height, elements = [], onSelectElement, selectedI
                         </>
                     )}
 
-                    {Array.isArray(elements) && elements.sort((a, b) => (a.z_index || 0) - (b.z_index || 0)).map((el, i) => {
+                    {/* Create a copy before sorting to avoid mutating props */}
+                    {[...(elements || [])].sort((a, b) => {
+                        const getZ = (el) => el.z_index !== undefined ? el.z_index : (el.type === 'text' || el.type === 'logo' ? 50 : 0);
+                        return getZ(a) - getZ(b);
+                    }).map((el, i) => {
                         const isSelected = el.id === selectedId;
 
                         if (el.type === 'packshot' || el.type === 'image' || el.type === 'logo') {
